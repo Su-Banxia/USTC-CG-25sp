@@ -35,11 +35,29 @@ void MiniDraw::draw_canvas()
             std::cout << "Set shape to Line" << std::endl;
             p_canvas_->set_line();
         }
-        ImGui::SameLine();
+        ImGui::SameLine();  //令Button同行
         if (ImGui::Button("Rect"))
         {
             std::cout << "Set shape to Rect" << std::endl;
             p_canvas_->set_rect();
+        }
+        
+        if (ImGui::Button("Ellipse"))
+        {
+            std::cout << "Set shape to Ellipse" << std::endl;
+            p_canvas_->set_ellipse();
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Polygon"))
+        {
+            std::cout << "Set shape to Polygon" << std::endl;
+            p_canvas_->set_polygon();
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("FreeHand"))
+        {
+            std::cout << "Set shape to FreeHand" << std::endl;
+            p_canvas_->set_freehand();
         }
 
         // HW1_TODO: More primitives

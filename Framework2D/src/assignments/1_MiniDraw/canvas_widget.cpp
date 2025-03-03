@@ -248,7 +248,6 @@ void Canvas::mouse_release_event()
     {
         shape_list_.push_back(current_shape_);
 
-        draw_shapes();
         draw_status_ = false;
     }
     // HW1_TODO: Drawing rule for more primitives

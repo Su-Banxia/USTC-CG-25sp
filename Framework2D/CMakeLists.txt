@@ -25,3 +25,4 @@ set(LIBRARY_DIR "${PROJECT_SOURCE_DIR}/libs")
 
 add_subdirectory(third_party)
 add_subdirectory(src)
+add_compile_options(/utf-8)

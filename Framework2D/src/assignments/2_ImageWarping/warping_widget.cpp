@@ -1,7 +1,12 @@
 #include "warping_widget.h"
+#include "warper/IDW_warper.h"
+#include "warper/RBF_warper.h"
+#include "kissrandom.h"
+
 
 #include <cmath>
 #include <iostream>
+#include <annoylib.h>
 
 namespace USTC_CG
 {
@@ -108,12 +113,6 @@ void WarpingWidget::gray_scale()
 }
 void WarpingWidget::warping()
 {
-    // HW2_TODO: You should implement your own warping function that interpolate
-    // the selected points.
-    // Please design a class for such warping operations, utilizing the
-    // encapsulation, inheritance, and polymorphism features of C++. 
-
-    // Create a new image to store the result
     Image warped_image(*data_);
     // Initialize the color of result image
     for (int y = 0; y < data_->height(); ++y)
@@ -156,22 +155,23 @@ void WarpingWidget::warping()
         }
         case kIDW:
         {
-            // HW2_TODO: Implement the IDW warping
-            // use selected points start_points_, end_points_ to construct the map
-            std::cout << "IDW not implemented." << std::endl;
+            current_Warper_ = std::make_shared<IDWWarper>(start_points_, end_points_);
+            apply_warp(warped_image);
             break;
         }
         case kRBF:
         {
-            // HW2_TODO: Implement the RBF warping
-            // use selected points start_points_, end_points_ to construct the map
-            std::cout << "RBF not implemented." << std::endl;
+            current_Warper_ = std::make_shared<RBFWarper>(start_points_, end_points_);
+            apply_warp(warped_image);
             break;
         }
         default: break;
     }
 
+    fill_black_holes(warped_image);
+
     *data_ = std::move(warped_image);
+
     update();
 }
 void WarpingWidget::restore()
@@ -277,5 +277,105 @@ WarpingWidget::fisheye_warping(int x, int y, int width, int height)
     int new_y = static_cast<int>(center_y + dy * ratio);
 
     return { new_x, new_y };
+}
+void WarpingWidget::apply_warp(Image& warped_image)
+{
+    int count = 0;
+    for (int y = 0; y < data_->height(); ++y)
+    {
+        for (int x = 0; x < data_->width(); ++x)
+        {
+            auto [new_x, new_y] = current_Warper_->warp(x, y);
+            if (new_x < 0 || new_x > data_->width() || new_y < 0 ||
+                new_y > data_->height())
+            {
+                count++;
+            }
+            if (new_x >= 0 && new_x < data_->width() && new_y >= 0 &&
+                new_y < data_->height())
+            {
+                vector<unsigned char> pixel =
+                    data_->get_pixel(x, y);
+                warped_image.set_pixel(new_x, new_y, pixel);
+            }
+        }
+    }
+    //cout << " ";
+}
+void WarpingWidget::fill_black_holes(Image& warped_image)
+{
+    vector<pair<int, int>> black_holes;
+    vector<pair<int, int>> valid_pixels;
+    vector<vector<unsigned char>> valid_data;
+
+    // Get black holes, valid pixels and its data
+    for (int y = 0; y < data_->height(); ++y)
+    {
+        for (int x = 0; x < data_->width(); ++x)
+        {
+            auto pixel_data = warped_image.get_pixel(x, y);
+            if (pixel_data[0] == 0 && pixel_data[1] == 0 && pixel_data[2] == 0)
+            {
+                pair<int, int> temp(x, y);
+
+                black_holes.push_back(temp);
+            }
+            else
+            {
+                pair<int, int> temp(x, y);
+
+                valid_pixels.push_back(temp);
+                valid_data.push_back(pixel_data);
+            }
+        }
+    }
+
+    // ANN
+    const int f = 2;
+    AnnoyIndex<int, float, Euclidean, Kiss32Random, AnnoyIndexSingleThreadedBuildPolicy> index(f);
+
+    for (int i = 0; i < valid_pixels.size(); ++i) 
+    {
+        vector<float> vec = { static_cast<float>( valid_pixels[i].first ), 
+                              static_cast<float>( valid_pixels[i].second ) };
+        index.add_item(i, vec.data()); 
+    }
+    
+    index.build(10);
+
+    vector<int> closest_items;
+    vector<float> distances;
+
+    int count = 0;
+
+    for (int i = 0; i < black_holes.size(); ++i)
+    {
+        closest_items.clear();  
+        distances.clear();   
+        
+        vector<float> hole_vec = { static_cast<float>( black_holes[i].first ), 
+                                   static_cast<float>( black_holes[i].second )};
+        
+        // find closest valid_point
+        index.get_nns_by_vector(hole_vec.data(), 1, -1, &closest_items, &distances);
+
+        if (distances[0] <= 5)
+        {
+            count++;
+            int  x = static_cast<int>( valid_pixels[closest_items[0]].first ), 
+                 y = static_cast<int>( valid_pixels[closest_items[0]].second );
+            
+            int  new_x = static_cast<int>( hole_vec[0] ),
+                 new_y = static_cast<int>( hole_vec[1] );
+
+            if (new_x >= 0 && new_x < data_->width() && new_y >= 0 &&
+                new_y < data_->height())
+            {
+                vector<unsigned char> pixel =
+                    warped_image.get_pixel(x, y);
+                warped_image.set_pixel(new_x, new_y, pixel);
+            }
+        }
+    }
 }
 }  // namespace USTC_CG

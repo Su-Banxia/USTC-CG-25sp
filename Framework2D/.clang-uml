@@ -10,3 +10,12 @@ diagrams:
     include:
       namespaces:
         - USTC_CG
+  2_ImageWarping:
+    type: class
+    glob:
+      - ./src/assignments/2_ImageWarping/main.cpp
+      - ./src/assignments/2_ImageWarping/*.cpp
+    using_namespace: USTC_CG
+    include:
+      namespaces:
+        - USTC_CG

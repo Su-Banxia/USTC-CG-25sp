@@ -1,6 +1,10 @@
 #pragma once
 
 #include "common/image_widget.h"
+#include "warper/warper.h"
+
+using namespace Annoy;
+using namespace std;
 
 namespace USTC_CG
 {
@@ -53,9 +57,13 @@ class WarpingWidget : public ImageWidget
     bool draw_status_ = false;
     WarpingType warping_type_;
 
+    std::shared_ptr<Warper> current_Warper_;
+
    private:
     // A simple "fish-eye" warping function
     std::pair<int, int> fisheye_warping(int x, int y, int width, int height);
+    void apply_warp(Image& warped_image);
+    void fill_black_holes(Image& warped_image);
 };
 
 }  // namespace USTC_CG

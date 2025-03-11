@@ -179,4 +179,3 @@ trainer.train(inputs, targets);
 - 变形效果示例：
 
 <div align=center><img width = 50% src ="figs/warp_demo.jpg"/></div align>
-

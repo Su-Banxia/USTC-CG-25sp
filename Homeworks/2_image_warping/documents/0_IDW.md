@@ -40,7 +40,8 @@ $$\sum_{i=1}^n w_i = 1, \text{and } \ w_i \geq 0, \text{ for } i = 1, 2, \cdots,
 
   $$E_i(\boldsymbol{T} _ i) = \sum _ {j=1, j\neq i}^n \sigma_i(\boldsymbol{p}_j)\left\Vert\boldsymbol{q}_i+\boldsymbol{T}_i(\boldsymbol{p}_j-\boldsymbol{p}_i) - \boldsymbol{q}_j\right\Vert^2.$$
 
-  > 求解这个最小二乘问题，可以对矩阵 $\boldsymbol{T}_i$ 的各个分量求偏导数，令偏导数等于 0，得到一个关于 $\boldsymbol{T}_i$ 的方程组，可以写作：
+  > 求解这个最小二乘问题，可以对矩阵 $\boldsymbol{T}_i$ 的各个分量求偏导数，令偏导数等于 0，得到一个关于 $\boldsymbol{T}_i$ 的方程组，可以
+  > 写作：
   >
   > $$\frac{\partial E_i}{\partial \boldsymbol{T}_i} =  \sum _ {j=1, j\neq i}^n 2\cdot \sigma_i(\boldsymbol{p}_j)\left(\boldsymbol{q}_i+\boldsymbol{T}_i(\boldsymbol{p}_j-\boldsymbol{p}_i) - \boldsymbol{q}_j\right)\cdot (\boldsymbol{p}_j-\boldsymbol{p}_i)^\top = \boldsymbol{0}$$
   >
@@ -52,7 +53,7 @@ $$\sum_{i=1}^n w_i = 1, \text{and } \ w_i \geq 0, \text{ for } i = 1, 2, \cdots,
   >
   > $$\boldsymbol{A} = \sum _ {j=1, j\neq i}^n \sigma_i(\boldsymbol{p}_j)(\boldsymbol{p}_j-\boldsymbol{p}_i) \cdot (\boldsymbol{p}_j-\boldsymbol{p}_i)^\top,$$
   >
-  >$$\boldsymbol{B} = \sum _ {j=1, j\neq i}^n \sigma_i(\boldsymbol{p}_j)(\boldsymbol{q}_j-\boldsymbol{q}_i)\cdot (\boldsymbol{p}_j-\boldsymbol{p}_i)^\top.$$
+  > $$\boldsymbol{B} = \sum _ {j=1, j\neq i}^n \sigma_i(\boldsymbol{p}_j)(\boldsymbol{q}_j-\boldsymbol{q}_i)\cdot (\boldsymbol{p}_j-\boldsymbol{p}_i)^\top.$$
 
 
 确定 $f_i$ 和 $w_i$ 之后，就得到了插值映射 $f$.
@@ -69,3 +70,4 @@ $$\sigma_i = \left[\dfrac{(R_i - \Vert\boldsymbol{p} - \boldsymbol{p} _ i\Vert)_
 
 [^IDW]: Ruprecht D, Muller H. [**Image warping with scattered data interpolation**](https://ieeexplore.ieee.org/document/365004)[J]. IEEE Computer Graphics and Applications, 1995, 15(2): 37-43.
 
+###### 

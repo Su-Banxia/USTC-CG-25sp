@@ -257,9 +257,15 @@ Eigen 库中，稀疏求解器（例如 `SparseLU`）中的函数 `compute()` �
 >[!Note]
 > 也请确保最终结果是在 Release 模式下运行，Debug 模式下运行也会对计算效率产生较大影响！
 
+实时效果可以参考（你可以添加自己喜欢的交互方式）
+
+<div align=center><img width = 60% src ="figs/rt.gif"/></div align>
+
 至此，矩形区域的图像融合、实时编辑就完成了（下图的 Seamless Cloning 的结果）。
 
 <div align=center><img width = 95% src ="figs/rst_example.jpg"/></div align>
+
+
 
 ## 3. 实现混合梯度（Optional）
 我们前面取向量场 $\boldsymbol{v}$ 为源图像的梯度信息。如果换成论文中 Equation.(12) 的形式，就是混合梯度方法。和前面实现的方法唯一的不同就是右边系数 $\boldsymbol{B}$ 有所不同。可以自行尝试（见上图的 Mixing Gradients 的结果）。
@@ -306,6 +312,14 @@ Eigen 库中，稀疏求解器（例如 `SparseLU`）中的函数 `compute()` �
   - [Google 命名规则](https://google.github.io/styleguide/cppguide.html) 
 - 如何查找文献（[百度网盘](http://pan.baidu.com/s/1o6z56T8)）
 - [数学在计算机图形学中的应用](http://staff.ustc.edu.cn/~lgliu/Resources/CG/Math_for_CG_Turk_CN.htm) 
+
+
+
+## 自由边界的特殊处理方法
+在贴图的时候，可能存在**贴图范围超出了背景图像**的矩形框。这个时候贴图和背景的交集**存在部分边界没有固定像素值**。
+下面给出一种解决方法。该方法仅作为演示如何求解混合边值问题，具体实现上效率不高（需要根据相交区域重新计算矩阵）。大家可以尝试去探寻**更高效**的做法。此处仅作为抛砖引玉😋。
+更严谨的推导详见各大FEM教材
+<div align=center><img width = 70% src ="figs/mixing.jpg"/></div align>
 
 ## 参考文献
 

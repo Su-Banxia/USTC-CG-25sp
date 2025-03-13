@@ -1,3 +1,8 @@
 add_subdirectory(1_MiniDraw)
-add_subdirectory(ImGuiTest)
+
 add_subdirectory(2_ImageWarping)
+
+add_subdirectory(3_PoissonImageEditing)
+
+add_subdirectory(ImGuiTest)
+

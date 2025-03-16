@@ -1,20 +1,14 @@
 compilation_database_dir: ./build
 output_directory: diagrams
 diagrams:
-  1_MiniDraw:
+  3_PoissonImageEditing:
     type: class
     glob:
-      - ./src/assignments/1_MiniDraw/main.cpp
-      - ./src/assignments/1_MiniDraw/*.cpp
-    using_namespace: USTC_CG
-    include:
-      namespaces:
-        - USTC_CG
-  2_ImageWarping:
-    type: class
-    glob:
-      - ./src/assignments/2_ImageWarping/main.cpp
-      - ./src/assignments/2_ImageWarping/*.cpp
+      #- ./src/assignments/3_PoissonImageEditing/main.cpp
+      #- ./src/assignments/3_PoissonImageEditing/source_image_widget.cpp
+      #- ./src/assignments/3_PoissonImageEditing/target_image_widget.cpp
+      - ./src/assignments/3_PoissonImageEditing/cloning_way/*.cpp
+      - ./src/assignments/3_PoissonImageEditing/shapes/*.cpp
     using_namespace: USTC_CG
     include:
       namespaces:

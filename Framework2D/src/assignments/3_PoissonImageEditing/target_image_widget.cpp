@@ -68,6 +68,11 @@ void TargetImageWidget::set_seamless()
     clone_type_ = kSeamless;
 }
 
+void TargetImageWidget::set_mixingGradients()
+{
+    clone_type_ = kMixingGra;
+}
+
 void TargetImageWidget::clone()
 {
     // The implementation of different types of cloning
@@ -87,6 +92,10 @@ void TargetImageWidget::clone()
     // The **value** of the mask should be 0 or 255: 0 for the background and
     // 255 for the selected region.
     std::shared_ptr<Image> mask = source_image_->get_region_mask();
+    int Soffset_x = static_cast<int>(source_image_->get_position().x);
+    int Soffset_y = static_cast<int>(source_image_->get_position().y);
+    int Toffset_x = static_cast<int>(mouse_position_.x);
+    int Toffset_y = static_cast<int>(mouse_position_.y);
 
     switch (clone_type_)
     {
@@ -95,36 +104,32 @@ void TargetImageWidget::clone()
         {
             restore();
 
-            for (int x = 0; x < mask->width(); ++x)
-            {
-                for (int y = 0; y < mask->height(); ++y)
-                {
-                    int tar_x =
-                        static_cast<int>(mouse_position_.x) + x -
-                        static_cast<int>(source_image_->get_position().x);
-                    int tar_y =
-                        static_cast<int>(mouse_position_.y) + y -
-                        static_cast<int>(source_image_->get_position().y);
-                    if (0 <= tar_x && tar_x < image_width_ && 0 <= tar_y &&
-                        tar_y < image_height_ && mask->get_pixel(x, y)[0] > 0)
-                    {
-                        data_->set_pixel(
-                            tar_x,
-                            tar_y,
-                            source_image_->get_data()->get_pixel(x, y));
-                    }
-                }
-            }
+            cloning_way = std::make_shared<Paste>
+                            (source_image_->get_data(), data_, mask);
+            shared_ptr<Image> result = cloning_way->solve();
+            apply_clone(result, mask);
             break;
         }
         case USTC_CG::TargetImageWidget::kSeamless:
         {
-            // HW3_TODO: You should implement your own seamless cloning. For
-            // each pixel in the selected region, calculate the final RGB color
-            // by solving Poisson Equations.
             restore();
 
+            cloning_way = std::make_shared<SeamlessClone>
+                            (source_image_->get_data(), data_, mask,
+                             Soffset_x, Soffset_y, Toffset_x, Toffset_y);
+            shared_ptr<Image> result = cloning_way->solve();
+            apply_clone(result, mask);
             break;
+        }
+        case USTC_CG::TargetImageWidget::kMixingGra:
+        {
+            restore();
+
+            cloning_way = std::make_shared<MixingGradients>
+                            (source_image_->get_data(), data_, mask,
+                             Soffset_x, Soffset_y, Toffset_x, Toffset_y);
+            shared_ptr<Image> result = cloning_way->solve();
+            apply_clone(result, mask);
         }
         default: break;
     }
@@ -161,5 +166,31 @@ ImVec2 TargetImageWidget::mouse_pos_in_canvas() const
 {
     ImGuiIO& io = ImGui::GetIO();
     return ImVec2(io.MousePos.x - position_.x, io.MousePos.y - position_.y);
+}
+
+void TargetImageWidget::apply_clone(const shared_ptr<Image>& result, const shared_ptr<Image>& mask)
+{
+    for (int x = 0; x < mask->width(); ++x)
+    {
+        for (int y = 0; y < mask->height(); ++y)
+        {
+            int tar_x =
+                static_cast<int>(mouse_position_.x) + x -
+                static_cast<int>(source_image_->get_position().x);
+                // offset_x = current_x - source_start_point().x
+            int tar_y =
+                static_cast<int>(mouse_position_.y) + y -
+                static_cast<int>(source_image_->get_position().y);
+            if (0 <= tar_x && tar_x < image_width_ && 0 <= tar_y &&
+                tar_y < image_height_ && mask->get_pixel(x, y)[0] > 0)
+            {
+                data_->set_pixel(
+                    tar_x,
+                    tar_y,
+                    result->get_pixel(x, y));
+                    //source_image_->get_data()->get_pixel(x, y))
+            }
+        }
+    }
 }
 }  // namespace USTC_CG

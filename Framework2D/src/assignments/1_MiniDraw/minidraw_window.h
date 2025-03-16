@@ -21,5 +21,7 @@ class MiniDraw : public Window
     std::shared_ptr<Canvas> p_canvas_ = nullptr;
 
     bool flag_show_canvas_view_ = true;
+
+    void add_tooltips(std::string desc);
 };
 }  // namespace USTC_CG

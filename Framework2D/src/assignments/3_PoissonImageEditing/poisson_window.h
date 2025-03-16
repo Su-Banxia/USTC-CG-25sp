@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include "common/window.h"
 #include "source_image_widget.h"
 #include "target_image_widget.h"

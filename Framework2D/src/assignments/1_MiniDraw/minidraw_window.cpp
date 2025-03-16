@@ -29,35 +29,45 @@ void MiniDraw::draw_canvas()
             &flag_show_canvas_view_,
             ImGuiWindowFlags_NoDecoration|ImGuiWindowFlags_NoBackground))
     {
-        // Buttons for shape types
-        if (ImGui::Button("Line"))
+        if (ImGui::BeginMainMenuBar())
         {
-            std::cout << "Set shape to Line" << std::endl;
-            p_canvas_->set_line();
-        }
-        ImGui::SameLine();  //令Button同行
-        if (ImGui::Button("Rect"))
-        {
-            std::cout << "Set shape to Rect" << std::endl;
-            p_canvas_->set_rect();
-        }
-        
-        if (ImGui::Button("Ellipse"))
-        {
-            std::cout << "Set shape to Ellipse" << std::endl;
-            p_canvas_->set_ellipse();
-        }
-        ImGui::SameLine();
-        if (ImGui::Button("Polygon"))
-        {
-            std::cout << "Set shape to Polygon" << std::endl;
-            p_canvas_->set_polygon();
-        }
-        ImGui::SameLine();
-        if (ImGui::Button("FreeHand"))
-        {
-            std::cout << "Set shape to FreeHand" << std::endl;
-            p_canvas_->set_freehand();
+            if (ImGui::BeginMenu("Shapes"))
+            {
+                if (ImGui::MenuItem("Line"))
+                {
+                    std::cout << "Set shape to Line" << std::endl;
+                    p_canvas_->set_line();
+                }
+                add_tooltips("Set shape to Line.");
+                if (ImGui::MenuItem("Rect"))
+                {
+                    std::cout << "Set shape to Rect" << std::endl;
+                    p_canvas_->set_rect();
+                }
+                add_tooltips("Set shape to Rect.");
+                if (ImGui::MenuItem("Ellipse"))
+                {
+                    std::cout << "Set shape to Ellipse" << std::endl;
+                    p_canvas_->set_ellipse();
+                }
+                add_tooltips("Set shape to Ellipse.");
+                if (ImGui::MenuItem("Polygon"))
+                {
+                    std::cout << "Set shape to Polygon" << std::endl;
+                    p_canvas_->set_polygon();
+                }
+                add_tooltips("Set shape to Polygon.");
+                if (ImGui::MenuItem("FreeHand"))
+                {
+                    std::cout << "Set shape to FreeHand" << std::endl;
+                    p_canvas_->set_freehand();
+                }
+                add_tooltips("Set shape to FreeHand.");
+                ImGui::EndMenu();
+                
+            }
+            ImGui::Separator();
+            ImGui::EndMainMenuBar();
         }
 
         // HW1_TODO: More primitives
@@ -74,5 +84,15 @@ void MiniDraw::draw_canvas()
         p_canvas_->draw();
     }
     ImGui::End();
+}
+void MiniDraw::add_tooltips(std::string desc)
+{
+    if (ImGui::BeginItemTooltip())
+    {
+        ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+        ImGui::TextUnformatted(desc.c_str());
+        ImGui::PopTextWrapPos();
+        ImGui::EndTooltip();
+    }
 }
 }  // namespace USTC_CG

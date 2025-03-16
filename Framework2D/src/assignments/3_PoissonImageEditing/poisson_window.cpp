@@ -28,7 +28,9 @@ void PoissonWindow::draw()
     if (p_target_)
         draw_target();
     if (p_source_)
+    {
         draw_source();
+    }
 }
 
 void PoissonWindow::draw_toolbar()
@@ -84,15 +86,57 @@ void PoissonWindow::draw_toolbar()
 
         ImGui::Separator();
 
-        if (ImGui::MenuItem("Paste") && p_target_ && p_source_)
+        if (ImGui::BeginMenu("Region Shapes"))
         {
-            p_target_->set_paste();
+            if (ImGui::MenuItem("Rect") && p_source_)
+            {
+                std::cout << "Set Region to Rect" << std::endl;
+                p_source_->set_rect();
+            }
+            add_tooltips("Set Region to Rect.");
+            if (ImGui::MenuItem("Ellipse") && p_source_)
+            {
+                std::cout << "Set Region to Ellipse" << std::endl;
+                p_source_->set_ellipse();
+            }
+            add_tooltips("Set Region to Ellipse.");
+            if (ImGui::MenuItem("FreeHand") && p_source_)
+            {
+                std::cout << "Set Region to FreeHand" << std::endl;
+                p_source_->set_freehand();
+            }
+            add_tooltips("Set Region to FreeHand.");
+            ImGui::EndMenu();
         }
-        add_tooltips(
-            "Press this button and then click in the target image, to "
-            "clone the selected region to the target image.");
-        // HW3_TODO: You may add more items in the menu for the different types
-        // of Poisson editing.
+
+        ImGui::Separator();
+
+
+        if (ImGui::BeginMenu("Cloning Ways"))
+        {
+            if (ImGui::MenuItem("Paste") && p_target_ && p_source_)
+            {
+                p_target_->set_paste();
+            }
+            add_tooltips(
+                "Press this button and then click in the target image, to "
+                "clone the selected region to the target image.");
+            if (ImGui::MenuItem("SeamlessClone") && p_target_ && p_source_)
+            {
+                p_target_->set_seamless();
+            }
+            add_tooltips(
+                "Press this button and then click in the target image, to "
+                "clone the selected region to the target image.");
+            if (ImGui::MenuItem("Mixing Gradients") && p_target_ && p_source_)
+            {
+                p_target_->set_mixingGradients();
+            }
+            add_tooltips(
+                "Press this button and then click in the target image, to "
+                "clone the selected region to the target image.");
+            ImGui::EndMenu();
+        }
 
         ImGui::EndMainMenuBar();
     }
@@ -130,6 +174,7 @@ void PoissonWindow::draw_source()
             min.y + size.y / 2 - image_size.y / 2);
         p_source_->set_position(pos);
         p_source_->draw();
+        p_source_->get_region_mask();
     }
     ImGui::End();
 }

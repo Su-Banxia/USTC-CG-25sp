@@ -26,4 +26,10 @@ void Line::update(float x, float y)
     end_point_x_ = x;
     end_point_y_ = y;
 }
+
+std::vector<std::pair<int, int>> Line::get_interior_pixels() const
+{
+    return {};
+}
+
 }  // namespace USTC_CG

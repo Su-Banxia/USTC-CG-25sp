@@ -31,6 +31,8 @@ void SourceImageWidget::enable_selecting(bool flag)
     flag_enable_selecting_region_ = flag;
 }
 
+// Create the region and print the region to the
+// source image
 void SourceImageWidget::select_region()
 {
     /// Invisible button over the canvas to capture mouse interactions.
@@ -44,14 +46,22 @@ void SourceImageWidget::select_region()
     // Record the current status of the invisible button
     bool is_hovered_ = ImGui::IsItemHovered();
     ImGuiIO& io = ImGui::GetIO();
+
     // Mouse events
+    if (is_hovered_ && ImGui::IsMouseClicked(ImGuiMouseButton_Right))
+    {
+        mouse_right_click_event();
+    }
+
     if (is_hovered_ && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
     {
         mouse_click_event();
     }
+
     mouse_move_event();
+
     if (!ImGui::IsMouseDown(ImGuiMouseButton_Left))
-        mouse_release_event();
+        mouse_release_event();  // In this function update the selected region
 
     // Region Shape Visualization
     if (selected_shape_)
@@ -79,6 +89,36 @@ ImVec2 SourceImageWidget::get_position() const
     return start_;
 }
 
+void SourceImageWidget::set_default()
+{
+    draw_status_ = false;
+    region_type_ = kDefault;
+}
+
+void SourceImageWidget::set_rect()
+{
+    draw_status_ = false;
+    region_type_ = kRect;
+}
+
+void SourceImageWidget::set_ellipse()
+{
+    draw_status_ = false;
+    region_type_ = kEllipse;
+}
+
+void SourceImageWidget::set_polygon()
+{
+    draw_status_ = false;
+    region_type_ = kPolygon;
+}
+
+void SourceImageWidget::set_freehand()
+{
+    draw_status_ = false;
+    region_type_ = kFreeHand;
+}
+
 void SourceImageWidget::mouse_click_event()
 {
     // Start drawing the region 
@@ -98,8 +138,38 @@ void SourceImageWidget::mouse_click_event()
                     std::make_unique<Rect>(start_.x, start_.y, end_.x, end_.y);
                 break;
             }
+            case USTC_CG::SourceImageWidget::kEllipse:
+            {
+                selected_shape_ = 
+                    std::make_unique<Ellipse>(start_.x, start_.y, end_.x, end_.y);
+                break;
+            }
+            case USTC_CG::SourceImageWidget::kFreeHand:
+            {
+                std::vector<float> x_list_, y_list_;
+
+                x_list_.push_back(start_.x);
+                y_list_.push_back(start_.y);
+
+                selected_shape_ = std::make_unique<FreeHand>(x_list_, y_list_);
+                break;
+            }
             default: break;
         }
+    }
+}
+
+void SourceImageWidget::mouse_right_click_event()
+{
+    if (draw_status_ && (region_type_ == kPolygon))
+    {
+        selected_shape_->finish();
+
+        draw_status_ = false;
+    }
+    else
+    {
+        return;
     }
 }
 
@@ -109,6 +179,12 @@ void SourceImageWidget::mouse_move_event()
     if (draw_status_)
     {
         end_ = mouse_pos_in_canvas();
+
+        if (region_type_ == kFreeHand)
+        {
+            selected_shape_->add_control_point(end_.x, end_.y);
+        }
+
         if (selected_shape_)
             selected_shape_->update(end_.x, end_.y);
     }

@@ -5,22 +5,19 @@
 #include <time.h>
 #include <Eigen/Sparse>
 
-/*
-** @brief HW4_TutteParameterization
-**
-** This file presents the basic framework of a "node", which processes inputs
-** received from the left and outputs specific variables for downstream nodes to
-** use.
-** - In the first function, node_declare, you can set up the node's input and
-** output variables.
-** - The second function, node_exec is the execution part of the node, where we
-** need to implement the node's functionality.
-** - The third function generates the node's registration information, which
-** eventually allows placing this node in the GUI interface.
-**
-** Your task is to fill in the required logic at the specified locations
-** within this template, especially in node_exec.
-*/
+    /*
+    ** @brief HW4_TutteParameterization
+    **
+    ** This file presents the basic framework of a "node", which processes inputs
+    ** received from the left and outputs specific variables for downstream nodes to
+    ** use.
+    ** - In the first function, node_declare, you can set up the node's input and
+    ** output variables.
+    ** - The second function, node_exec is the execution part of the node, where we
+    ** need to implement the node's functionality.
+    ** Your task is to fill in the required logic at the specified locations
+    ** within this template, especially in node_exec.
+    */
 
 NODE_DEF_OPEN_SCOPE
 NODE_DECLARATION_FUNCTION(min_surf)

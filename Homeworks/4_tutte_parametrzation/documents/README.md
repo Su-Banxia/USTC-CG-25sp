@@ -48,7 +48,7 @@ $$ \boldsymbol\delta _ i = \boldsymbol{v _ i} - \sum _ {j \in N(i)} w _ j  \bold
 $$ \frac{1}{d _ i} \sum _ {j\in N(i)} (\boldsymbol{v} _ i - \boldsymbol{v} _ j) = \boldsymbol{0}, \quad \text{for all interior } i .$$
 
 
-### 参考的节点连接图（不同人写的输入输出不一定相同，这里仅供参考）
+### 参考的节点连接图（不同人写的输入输出不一定相同，这里仅供参考）（这里有关节点的简单介绍[->](../NodeIntroduction.md/)）
 <div align=center><img width = 80% src ="figs/mesh-9.png"/></div align>
 
 > [!tip]
@@ -59,6 +59,8 @@ $$ \frac{1}{d _ i} \sum _ {j\in N(i)} (\boldsymbol{v} _ i - \boldsymbol{v} _ j) 
 > 可以判断是否是边界，加上遍历很容易判断出哪些点是落在边界上的。
 > 
 > 固定边界取决于你设置的边界，你可以通过.idx()来找到点的索引，再通过点的索引来找到点的位置，进而设置点的坐标。
+> 
+> 这里还要说明的一点是read_usd的路径问题，以Balls举例，File Name里面填的既可以是绝对路径，也可以是相对路径，其相对路径实在Binaries/debug或release里面的，这里推荐使用相对路径。prim path可以打开Balls.usda，可以看到里面定义的路径，没有大的变动基本上就跟我输入进去的一样。
 
 ## 2. 修改边界条件得到平面参数化
 
@@ -73,6 +75,8 @@ $$ \frac{1}{d _ i} \sum _ {j\in N(i)} (\boldsymbol{v} _ i - \boldsymbol{v} _ j) 
 计算不同权重下的 **Tutte 参数化**，例如
   - （要求实现）Cotangent weights 
   - （可选）shape-preserving weights （[Floater weights](https://www.cs.jhu.edu/~misha/Fall09/Floater97.pdf)）。
+
+uniform 的权重可以两个节点连成，就如上图。但要注意下，conform的权重要用原网格来算，得加个 reference mesh 的输入。
 
 ### 参考公式
 #### Tutte 参数化计算
@@ -107,3 +111,4 @@ $$ w _ j = \frac{w _ j}{\displaystyle \sum_k w_k }.$$
 把网格参数化到平面二维区域之后，就可以设置网格的**纹理坐标**，告诉网格如何从纹理贴图中采样颜色：（不同人写的输入输出不一定相同，这里仅供参考）
 <div align=center><img width = 80% src ="figs/mesh-10.png"/></div align>
 
+注意，打开纹理是在如图所示的右下角位置vertex texture color vp_(texture color)点击enable。

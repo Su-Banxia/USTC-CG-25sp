@@ -3,36 +3,36 @@
 #include "GCore/util_openmesh_bind.h"
 #include <Eigen/Sparse>
 
-/*
-** @brief HW4_TutteParameterization
-**
-** This file contains two nodes whose primary function is to map the boundary of
-*a mesh to a plain
-** convex closed curve (circle of square), setting the stage for subsequent
-*Laplacian equation
-** solution and mesh parameterization tasks.
-**
-** Key to this node's implementation is the adept manipulation of half-edge data
-*structures
-** to identify and modify the boundary of the mesh.
-**
-** Task Overview:
-** - The two execution functions (node_map_boundary_to_square_exec,
-** node_map_boundary_to_circle_exec) require an update to accurately map the
-*mesh boundary to a and
-** circles. This entails identifying the boundary edges, evenly distributing
-*boundary vertices along
-** the square's perimeter, and ensuring the internal vertices' positions remain
-*unchanged.
-** - A focus on half-edge data structures to efficiently traverse and modify
-*mesh boundaries.
-*/
+    /*
+    ** @brief HW4_TutteParameterization
+    **
+    ** This file contains two nodes whose primary function is to map the boundary of
+    *a mesh to a plain
+    ** convex closed curve (circle of square), setting the stage for subsequent
+    *Laplacian equation
+    ** solution and mesh parameterization tasks.
+    **
+    ** Key to this node's implementation is the adept manipulation of half-edge data
+    *structures
+    ** to identify and modify the boundary of the mesh.
+    **
+    ** Task Overview:
+    ** - The two execution functions (node_map_boundary_to_square_exec,
+    ** node_map_boundary_to_circle_exec) require an update to accurately map the
+    *mesh boundary to a and
+    ** circles. This entails identifying the boundary edges, evenly distributing
+    *boundary vertices along
+    ** the square's perimeter, and ensuring the internal vertices' positions remain
+    *unchanged.
+    ** - A focus on half-edge data structures to efficiently traverse and modify
+    *mesh boundaries.
+    */
 
 NODE_DEF_OPEN_SCOPE
 
-/*
-** HW4_TODO: Node to map the mesh boundary to a circle.
-*/
+    /*
+    ** HW4_TODO: Node to map the mesh boundary to a circle.
+    */
 
 NODE_DECLARATION_FUNCTION(circle_boundary_mapping)
 {
@@ -105,9 +105,9 @@ NODE_EXECUTION_FUNCTION(circle_boundary_mapping)
 	return true;
 }
 
-/*
-** HW4_TODO: Node to map the mesh boundary to a square.
-*/
+    /*
+    ** HW4_TODO: Node to map the mesh boundary to a square.
+    */
 
 NODE_DECLARATION_FUNCTION(square_boundary_mapping)
 {

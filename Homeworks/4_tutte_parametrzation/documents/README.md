@@ -62,7 +62,7 @@ $$ \frac{1}{d _ i} \sum _ {j\in N(i)} (\boldsymbol{v} _ i - \boldsymbol{v} _ j) 
 > 
 > 这里还要说明的一点是read_usd的路径问题，以Balls举例，File Name里面填的既可以是绝对路径，也可以是相对路径，其相对路径实在Binaries/debug或release里面的，这里推荐使用相对路径。prim path可以打开Balls.usda，可以看到里面定义的路径，没有大的变动基本上就跟我输入进去的一样。
 
-## 2. 修改边界条件得到平面参数化
+### 2. 修改边界条件得到平面参数化
 
 ### 2.1 边界映射
 完成 [边界映射节点](../../../Framework3D/submissions/assignments/nodes/node_boundary_mapping.cpp)，把网格**边界映射到平面凸区域的边界**（正方形、圆形）。可以可视化检查结果的正确性。
@@ -92,6 +92,7 @@ $$ \boldsymbol{v _ i} - \sum _ {j \in N(i)} w _ j  \boldsymbol{v _ j} = \boldsym
 - Floater's shape-preserving weights (optional): 参考论文 [Floater1997](https://www.cs.jhu.edu/~misha/Fall09/Floater97.pdf)； 
 - 归一化处理 :
   
+
 $$ w _ j = \frac{w _ j}{\displaystyle \sum_k w_k }.$$
 
 

@@ -50,7 +50,7 @@
 - 首先，在 [submission/](../../Framework3D/submissions/) 文件夹下**复制**一份 [assignments/](../../Framework3D/submissions/assignments/) 文件夹，并改名为 `lisi_homework/`（依你的姓名而定）；
 - 确保**在上一步操作完成之后**，再实现和连接你的节点图。这样，你自己实现的所有节点在框架界面中都应该**自动**包含了你的名称前缀（这对我们很重要！）。例如李四同学实现的所有节点都应该自动包含如下的 `lisi_` 前缀：
 - <div align=center><img width = 60% src ="../../Softwares/images/node_name_example.png"/></div align> -->
-完成作业之后，打包三样内容即可：
+  完成作业之后，打包三样内容即可：
   - 你的 `xxx_homework/`文件夹（拷贝并改名自 [assignments/](../../Framework3D/submissions/assignments/)，不要包含中文，详见 [F3D_kickstart.pdf](../../Framework3D/F3D%20kickstart.pdf)）
   - 节点连接信息（stage.usdc，来自框架目录下的 `Assets/` 文件夹，请一并拷贝到上边的 `xxx_homework/`文件夹里）；
   - 报告（命名为 `id_name_report4.pdf`）

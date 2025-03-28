@@ -27,7 +27,7 @@ using namespace std;
     */
 
 NODE_DEF_OPEN_SCOPE
-NODE_DECLARATION_FUNCTION(min_surf)
+NODE_DECLARATION_FUNCTION(min_surf_uniform_weights)
 {
     // Input-1: Original 3D mesh with boundary
     b.add_input<Geometry>("Input");
@@ -57,7 +57,7 @@ NODE_DECLARATION_FUNCTION(min_surf)
     b.add_output<Geometry>("Output");
 }
 
-NODE_EXECUTION_FUNCTION(min_surf)
+NODE_EXECUTION_FUNCTION(min_surf_uniform_weights)
 {
     // Get the input from params
     auto input = params.get_input<Geometry>("Input");
@@ -114,7 +114,6 @@ NODE_EXECUTION_FUNCTION(min_surf)
             //calculator = make_unique<CotangentWeights>(*weight_halfedge_mesh, weight_vertex_now, weight_eighbor);
             total_weight += calculator->calculator_weight();
         }
-
         auto it = vertex_now.vertices().begin();
         auto weight_it = weight_vertex_now.vertices().begin();
         for (;  it != vertex_now.vertices().end() &&
@@ -174,5 +173,5 @@ NODE_EXECUTION_FUNCTION(min_surf)
     return true;
 }
 
-NODE_DECLARATION_UI(min_surf);
+NODE_DECLARATION_UI(min_surf_uniform_weights);
 NODE_DEF_CLOSE_SCOPE

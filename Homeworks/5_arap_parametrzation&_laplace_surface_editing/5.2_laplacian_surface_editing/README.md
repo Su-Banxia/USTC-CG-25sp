@@ -18,7 +18,7 @@
 
 - 可阅读论文和课件，按照如下思路完成本次作业：
   - **Step 1:** 导入一个现有的mesh，通过一些节点来得到所需的控制点。
-  这里可以使用get_polyscope_vertices来进行点的选取，再使用get_control_points来得到你所交互的点。具体用法可以看下面。（注意这里并没有处理得到的点，只是单纯的将选中的点进行拖动，你可以将get_polyscope_vertices以及get_control_points这两个输出的结果接入你所写的节点里）
+    这里可以使用get_polyscope_vertices来进行点的选取，再使用get_control_points来得到你所交互的点。具体用法可以看下面。（注意这里并没有处理得到的点，只是单纯的将选中的点进行拖动，你可以将get_polyscope_vertices以及get_control_points这两个输出的结果接入你所写的节点里）
     <div align=center><img width = 75% src ="figs/Laplace-8.png"/></div align>
 
   - **Step 2:** 得到改变后的点，加上原网格，进行列方程求解。

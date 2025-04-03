@@ -46,7 +46,8 @@
 
 目前节点的逻辑是，每当下面节点系统改变时，整个节点系统都会跑一遍，那么就需要用一些特殊的方式来进行存储，使得某些数据不会跟着一直在跑，这里使用如下图的方式进行存储数据。
 
-<div align=center><img width = 75% src ="figs/Laplace-4.png"/></div align>
+<div align=center><img width = 75% src ="figs/Laplace-4.png"/></div align>	
+
 
 首先，先定义一个要存储的类型，这里就以SolverStorage为例，定义完类型之后可以在程序里面如此使用：
 

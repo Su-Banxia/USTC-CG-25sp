@@ -74,12 +74,11 @@ $$
 首先我们定义一根弹簧 $i$ 的能量为：
 
 $$
-E_i = \frac{k}{2} (\|\mathbf{x} _ {i1} - \mathbf{x}_{i2}\| - L)^2 
+E_i = \frac{k}{2} (\|\mathbf{x} _ {i1} - \mathbf{x}_{i2}\| - L)^2
 $$
 
 我们记 $\mathbf{x}_{i} := \mathbf{x} _ {i1} - \mathbf{x} _ {i2}$
 那么总体的能量为：
-
 $$
 E = \sum_{i} E_i = \sum_{i} \frac{k}{2} \left(\|\mathbf{x}_{i}\| - L\right)^2
 $$
@@ -159,6 +158,7 @@ dirichlet_bc_mask[n_fix - 1] = true;
 
 > [!Note]
 > 本次作业为了几何表示的方便，我们没有使用交叉型的网格表示弹簧质点系统（如下所示），只使用了三角网格。交叉型网格能够考虑更多布料在弯曲时的约束，如果你有兴趣，也可以在程序中加入这些额外的边连接，并比较它和三角网格的仿真效果的区别。
+>
 > <div  align="center">    
 > <img src="../images/cross_mesh.png" style="zoom:40%"/>
 > </div>
@@ -214,7 +214,6 @@ $$
 
 这个公式可以视为一个优化问题的一阶最优条件（KKT），
 那么其实是在优化这个问题（记 $\mathbf{x} = \mathbf{x}^{n+1} \in \mathbf{R}^{3n \times 1}$ ）：
-
 $$
 \min_{\mathbf{x}} \quad g(\mathbf{x}) = \frac{1}{2 h^2}(\mathbf{x} - \mathbf{y})^\top   \mathbf{M} (\mathbf{x} - \mathbf{y}) + E(\mathbf{x}) \quad(6)
 $$
@@ -233,7 +232,7 @@ $$
 为了求解优化问题，我们可以使用梯度下降，但是其收敛速度比较慢（线性收敛速度）。在图形学中，更加常用的做法是使用牛顿法：
 
 $$
- \mathbf{x}^{n+1} = \mathbf{x}^n - (\nabla^2 g)^{-1} \nabla \mathbf{g} 
+\mathbf{x}^{n+1} = \mathbf{x}^n - (\nabla^2 g)^{-1} \nabla \mathbf{g}
 $$
 
 那么需要求能量 $g$ 的Hessian矩阵 $\nabla^2 g$ 。
@@ -269,9 +268,9 @@ $$
 
 那么这里需要求解的方程组为: 
 
-$$ 
+$$
 \nabla^2 g \Delta \mathbf{x} = -\nabla g \quad(8)
-$$ 
+$$
 
 在最优化中，求解一个优化问题可能需要迭代多次，直到收敛（ $\|\nabla g\|$ 小于阈值 ），我们这里出于效率考虑，在一个时间步内只进行一次牛顿法的迭代，你也可以尝试在一个时间步内让牛顿法迭代多次直到收敛，并比较两种做法的仿真结果。
 
@@ -353,9 +352,9 @@ $$
 
 解出 $\mathbf{X}^{\text{new}}$ 后，新的速度可以直接计算为： 
 
-$$ 
-\mathbf{V} = (\mathbf{X}^{\text{new}} - \mathbf{X}^{\text{old}}) / h  
-$$  
+$$
+\mathbf{V} = (\mathbf{X}^{\text{new}} - \mathbf{X}^{\text{old}}) / h
+$$
 
 
 如果实现正确，将1. 劲度系数`stiffness`(如100-1000)和2.时间步长`h`（如0.01）设置为合理的值（隐式时间积分不需要调阻尼系数），并考虑了Hessian的正定性：就可以看到下面的仿真结果（gif经过加速），可以实现比半隐式时间积分大20倍甚至更多的时间步长（但由于需要组装Hessian并求解线性方程组，隐式时间积分每一步的时间会比半隐式时间积分长）：

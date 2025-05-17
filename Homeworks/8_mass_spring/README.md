@@ -42,7 +42,7 @@
 
   - 你的 `xxx_homework/`文件夹（拷贝并改名自 [assignments/](../../Framework3D/submissions/assignments/)，不要包含中文，详见 [F3D_kickstart.pdf](../../Framework3D/F3D%20kickstart.pdf)
   - 报告（命名为 `id_name_report8.pdf`）
-  
+
   具体请务必严格按照如下的格式提交：
 
   ```

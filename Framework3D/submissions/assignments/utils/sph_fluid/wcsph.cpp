@@ -11,11 +11,11 @@ WCSPH::WCSPH(const MatrixXd& X, const Vector3d& box_min, const Vector3d& box_max
 
 void WCSPH::compute_density()
 {
+}
 	// -------------------------------------------------------------
 	// (HW TODO) Implement the density computation
     // You can also compute pressure in this function 
 	// -------------------------------------------------------------
-}
 
 void WCSPH::step()
 {

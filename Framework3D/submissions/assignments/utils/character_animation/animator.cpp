@@ -13,14 +13,33 @@ Joint::Joint(int idx, string name, int parent_idx, const GfMatrix4f& bind_transf
 void Joint::compute_world_transform()
 {
     // ---------- (HW TODO) Compute world space trasform of this joint -----------------
-
+    if (parent_)
+    {
+        world_transform_  = parent_->world_transform_ * local_transform_;
+    }
+    else
+    {
+        world_transform_ = local_transform_;
+    }
     // --------------------------------------------------------------------------------
+}
+
+void compute_world_transform_recursive(const shared_ptr<Joint>& joint) 
+{
+    joint->compute_world_transform();
+    for (const auto& child : joint->children_) 
+    {
+        compute_world_transform_recursive(child);
+    }
 }
 
 void JointTree::compute_world_transforms_for_each_joint()
 {
     // ----------- (HW_TODO) Traverse all joint and compute its world space transform ---
-	// Call compute_world_transform for each joint
+	if (root_)
+    {
+        compute_world_transform_recursive(root_);
+    }
     // ---------------------------------------------
 }
 
@@ -92,7 +111,42 @@ void Animator::update_mesh_vertices()
 	// ----------- (HW_TODO) Update mesh vertices according to the current joint transforms ----
 	// 1. get skel_->jointIndices and skel_->jointWeight;
 	// 2. For each vertex, compute the new position by transforming the rest position with the joint transforms
-	// 2. Update the vertex position in the mesh
+	// 3. Update the vertex position in the mesh
+    auto rest_vertices = mesh_->get_vertices();
+    const auto& jointIndices = skel_->jointIndices;   // VtArray<int>
+    const auto& jointWeights = skel_->jointWeight; 
+
+    int nVerts = rest_vertices.size();
+    int m = static_cast<int>(jointIndices.size() / nVerts);
+
+    VtArray<GfVec3f> new_vertices(nVerts);
+    
+    for (int v = 0; v < nVerts; ++v)
+    {
+        GfVec3f skinned_pos(0.0f);
+
+        for (int j = 0; j < m; ++j)
+        {
+            int idxInFlat = v * m + j;
+            int joint_idx = jointIndices[idxInFlat];
+            float w = jointWeights[idxInFlat];
+
+            auto joint = joint_tree_.get_joint(joint_idx);
+            auto T = joint->get_world_transform();
+            auto B = joint->get_bind_transform();
+
+            GfMatrix4f M = T * B;
+
+            GfVec3f transformed = M.Transform(rest_vertices[v]);
+
+            skinned_pos += w * transformed;
+        }
+
+        new_vertices[v] = skinned_pos;
+    }
+
+    mesh_->set_vertices(new_vertices);
+
 	// --------------------------------------------------------------------------------
 }
 
